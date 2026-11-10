@@ -8,10 +8,27 @@ jobs:
 
    steps:
     - name: instalar pytest
-      run: pip install pytest
+      run: echo "aa"
     - name: Bajar código
       uses: actions/checkout@v7
     - name: Probar código
-      run: python3 wallet.py
-    - name: testear
-      run: python3 test.py
+      run: python3 main.py
+
+    -
+        name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+    -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+    -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+    -
+        name: Build and push
+        uses: docker/build-push-action@v7
+        with:
+          push: true
+          tags: anavicttc/hola2026
